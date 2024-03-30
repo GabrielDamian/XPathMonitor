@@ -68,7 +68,7 @@ namespace WebApplication1.Controllers
         [Authorize] 
         public IActionResult VerifyToken()
         {
-            // Obține tokenul JWT din antetul cererii
+            // JWT bearer
             var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token == null)
@@ -107,7 +107,7 @@ namespace WebApplication1.Controllers
 
         private string GenerateJwtToken(string username)
         {
-            var jwtToken = _configuration["Jwt:Secret"];
+            var jwtToken = _configuration["JWT_TOKEN"];
 
             var key = Encoding.ASCII.GetBytes(jwtToken);
             var tokenHandler = new JwtSecurityTokenHandler();

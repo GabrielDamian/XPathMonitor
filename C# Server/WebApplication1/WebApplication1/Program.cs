@@ -7,7 +7,18 @@ using WebApplication1;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// services
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,11 +33,9 @@ builder.Services.AddSingleton<IDbConnection>(_ =>
 
 builder.Services.AddScoped<IDataService, SqlDataService>();
 
-// service IConfiguration
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-// JWT key
-var jwtSecret = builder.Configuration["Jwt:Secret"];
+var jwtSecret = builder.Configuration["JWT_TOKEN"];
 var key = Encoding.ASCII.GetBytes(jwtSecret);
 
 builder.Services.AddAuthentication(config =>
@@ -54,8 +63,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAllOrigins"); // middleware CORS
 app.UseHttpsRedirection();
-app.UseAuthentication(); // auth middleware
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

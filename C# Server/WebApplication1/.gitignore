@@ -5,6 +5,8 @@
 
 #Custom user and pass temp solution (dev mode);
 **/config.json
+**/appsettings.json
+
 
 # User-specific files
 *.rsuser

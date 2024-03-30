@@ -24,7 +24,7 @@ namespace WebApplication1
             using (var command = _dbConnection.CreateCommand())
             {
                 _dbConnection.Open();
-                command.CommandText = "SELECT COUNT(*) FROM USERS WHERE Username = @Username";
+                command.CommandText = "SELECT COUNT(*) FROM USERS WHERE username = @Username";
 
                 var usernameParam = command.CreateParameter();
                 usernameParam.ParameterName = "@Username";
@@ -42,7 +42,7 @@ namespace WebApplication1
             using (var command = _dbConnection.CreateCommand())
             {
                 _dbConnection.Open();
-                command.CommandText = "INSERT INTO USERS (Username, Password) VALUES (@Username, @Password)";
+                command.CommandText = "INSERT INTO USERS (username, password_hash) VALUES (@Username, @Password)";
 
                 var usernameParam = command.CreateParameter();
                 usernameParam.ParameterName = "@Username";
@@ -65,7 +65,7 @@ namespace WebApplication1
             using (var command = _dbConnection.CreateCommand())
             {
                 _dbConnection.Open();
-                command.CommandText = "SELECT COUNT(*) FROM USERS WHERE Username = @Username AND Password = @Password";
+                command.CommandText = "SELECT COUNT(*) FROM USERS WHERE username = @Username AND password_hash = @Password";
 
                 var usernameParam = command.CreateParameter();
                 usernameParam.ParameterName = "@Username";

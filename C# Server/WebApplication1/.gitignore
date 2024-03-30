@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#Custom user and pass temp solution (dev mode);
+**/config.json
+
 # User-specific files
 *.rsuser
 *.suo

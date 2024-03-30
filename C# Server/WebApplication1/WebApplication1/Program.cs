@@ -1,28 +1,32 @@
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Data;
+using Microsoft.Data.SqlClient;
 using WebApplication1;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuring AWS SQL Database connection
 var awsSqlConnectionString = Helpers.GetRDSConnectionString();
-Console.WriteLine(awsSqlConnectionString);
-
-builder.Services.AddSingleton<IDbConnection>(_ =>{
+builder.Services.AddSingleton<IDbConnection>(_ =>
+{
     var connection = new SqlConnection(awsSqlConnectionString);
     connection.ConnectionString += ";Encrypt=true;TrustServerCertificate=true";
     return connection;
 });
 
+builder.Services.AddScoped<IDataService, SqlDataService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -32,26 +36,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
-// Check and create USERS table
-using (var scope = app.Services.CreateScope())
-{
-    var dbConnection = scope.ServiceProvider.GetRequiredService<IDbConnection>();
-    dbConnection.Open();
-
-    // Check if USERS table exists, if not, create it
-    var command = dbConnection.CreateCommand();
-    command.CommandText = @"
-        IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'USERS')
-        BEGIN
-            CREATE TABLE USERS (
-                Username NVARCHAR(100),
-                Password NVARCHAR(100)
-            )
-        END";
-    command.ExecuteNonQuery();
-
-    dbConnection.Close();
-}
 
 app.Run();

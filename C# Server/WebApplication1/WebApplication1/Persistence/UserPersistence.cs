@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data;
+﻿using System.Data;
 
 namespace WebApplication1
 {
@@ -7,7 +6,7 @@ namespace WebApplication1
     {
         bool UserExists(string username);
         bool CreateUser(string username, string password);
-        bool ValidateUser(string username, string password);
+        (bool, int) ValidateUser(string username, string password);
     }
 
     public class SqlDataService : IDataService
@@ -60,12 +59,12 @@ namespace WebApplication1
             }
         }
 
-        public bool ValidateUser(string username, string password)
+        public (bool, int) ValidateUser(string username, string password)
         {
             using (var command = _dbConnection.CreateCommand())
             {
                 _dbConnection.Open();
-                command.CommandText = "SELECT COUNT(*) FROM USERS WHERE username = @Username AND password_hash = @Password";
+                command.CommandText = "SELECT user_id FROM USERS WHERE username = @Username AND password_hash = @Password";
 
                 var usernameParam = command.CreateParameter();
                 usernameParam.ParameterName = "@Username";
@@ -77,9 +76,17 @@ namespace WebApplication1
                 passwordParam.Value = password;
                 command.Parameters.Add(passwordParam);
 
-                int count = (int)command.ExecuteScalar();
+                object result = command.ExecuteScalar();
                 _dbConnection.Close();
-                return count > 0;
+
+                if (result != null && int.TryParse(result.ToString(), out int userId))
+                {
+                    return (true, userId); 
+                }
+                else
+                {
+                    return (false, -1); 
+                }
             }
         }
     }

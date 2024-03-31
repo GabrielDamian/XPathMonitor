@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { config } from "../config";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,9 +12,10 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkToken = async () => {
       const token = Cookies.get("jwt");
+      console.log("token from ck:", token);
       if (token) {
         try {
-          const response = await axios.get("http://localhost:3001/api/token", {
+          const response = await axios.get(`${config.server}/auth/verify-token`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

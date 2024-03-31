@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Text;
 using WebApplication1;
+using WebApplication1.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,8 @@ builder.Services.AddSingleton<IDbConnection>(_ =>
 });
 
 builder.Services.AddScoped<IDataService, SqlDataService>();
+builder.Services.AddScoped<ILinkService, SqlLinksService>();
+builder.Services.AddScoped<IPriceService, SqlPriceService>();
 
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 

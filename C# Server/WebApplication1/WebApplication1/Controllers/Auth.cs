@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Text;
+﻿using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication1.Controllers
 {
@@ -25,14 +23,14 @@ namespace WebApplication1.Controllers
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {
-            var username = request.Username;
-            var password = request.Password;
+            var username = request.username;
+            var password = request.password;
 
-            bool isAuthenticated = _dataService.ValidateUser(username, password);
+            (bool isAuthenticated, int userId) = _dataService.ValidateUser(username, password);
 
             if (isAuthenticated)
             {
-                var token = GenerateJwtToken(username);
+                var token = GenerateJwtToken(username, userId);
                 return Ok(new { Token = token });
             }
             else
@@ -44,8 +42,8 @@ namespace WebApplication1.Controllers
         [HttpPost("signup")]
         public IActionResult SignUp(SignUpRequest request)
         {
-            var username = request.Username;
-            var password = request.Password;
+            var username = request.username;
+            var password = request.password;
 
             if (_dataService.UserExists(username))
             {
@@ -65,47 +63,22 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("verify-token")]
-        [Authorize] 
+        [Authorize]
         public IActionResult VerifyToken()
         {
-            // JWT bearer
-            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-
-            if (token == null)
-            {
-                return Unauthorized("Tokenul lipsește.");
-            }
-
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]);
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                }, out var validatedToken);
-
-                var jwtToken = (JwtSecurityToken)validatedToken;
-                var username = jwtToken.Claims.First(x => x.Type == ClaimTypes.Name).Value;
-
-                var userExists = _dataService.UserExists(username);
-                if (!userExists)
-                {
-                    return NotFound("Utilizatorul nu există.");
-                }
-
+                var userId = Helpers.GetUserIdFromToken(HttpContext, _configuration);
                 return Ok("Tokenul și utilizatorul sunt valide.");
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return BadRequest("Tokenul nu este valid: " + ex.Message);
             }
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(string username, int userId)
         {
             var jwtToken = _configuration["JWT_TOKEN"];
 
@@ -115,7 +88,8 @@ namespace WebApplication1.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, username)
+            new Claim("username", username),
+            new Claim("userId", userId.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -127,13 +101,13 @@ namespace WebApplication1.Controllers
 
     public class LoginRequest
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
     }
 
     public class SignUpRequest
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
     }
 }

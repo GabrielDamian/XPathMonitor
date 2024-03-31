@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../config";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -7,19 +8,23 @@ export default function Signup() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    const response = await fetch("http://localhost:3001/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard");
-    } else {
-      console.error("Signup failed");
+    try {
+      let response = await fetch(`${config.server}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        window.alert("Signup successful");
+        navigate("/login");
+      }
+    } catch (err) {
+      window.alert("Signup failed");
+      setUsername("");
+      setPassword("");
     }
   };
 

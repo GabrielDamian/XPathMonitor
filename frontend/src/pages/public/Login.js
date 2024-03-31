@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../config";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -7,25 +9,32 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    const response = await fetch("http://localhost:3001/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard");
-    } else {
-      console.error("Login failed");
+    try {
+      let response = await fetch(`${config.server}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (response.ok) {
+        let data = await response.json();
+        let token = data.token;
+        Cookies.set("jwt", token);
+        window.alert("Login successful");
+        navigate("/dashboard");
+      } else {
+        window.alert("Login failed");
+      }
+    } catch (err) {
+      console.log(err);
+      window.alert("Login failed");
     }
   };
   const handleChange = (e) => {
     if (e.target.name === "username") {
       setUsername(e.target.value);
-    } else {
+    } else if (e.target.name === "password") {
       setPassword(e.target.value);
     }
   };

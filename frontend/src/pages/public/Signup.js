@@ -8,6 +8,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
+    console.log("test:", config);
     try {
       let response = await fetch(`${config.server}/auth/signup`, {
         method: "POST",
@@ -22,6 +23,7 @@ export default function Signup() {
         navigate("/login");
       }
     } catch (err) {
+      console.log(err);
       window.alert("Signup failed");
       setUsername("");
       setPassword("");

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { config } from "../../config";
 import axios from "axios";
+import Link from "../../components/Link";
 
 export default function Dashboard() {
   const [newItem, setNewItem] = useState({ link: "", description: "" });
@@ -14,7 +15,7 @@ export default function Dashboard() {
   const fetchData = async () => {
     try {
       const token = Cookies.get("jwt");
-      const response = await axios.get(`${config.server}/links`, {
+      const response = await axios.get(`${config.server}links`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,7 +36,7 @@ export default function Dashboard() {
       const token = Cookies.get("jwt");
 
       await axios.post(
-        `${config.server}/links`,
+        `${config.server}links`,
         {
           url: newItem.link,
           description: newItem.description,
@@ -48,21 +49,6 @@ export default function Dashboard() {
       );
       window.alert("New item added successfully");
       setNewItem({ link: "", description: "" });
-      fetchData();
-    } catch (error) {
-      console.log("error", error.message);
-    }
-  };
-
-  const deleteItem = async (id) => {
-    console.log("deleteItem:", id);
-    try {
-      const token = Cookies.get("jwt");
-      await axios.delete(`${config.server}/links/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
       fetchData();
     } catch (error) {
       console.log("error", error.message);
@@ -108,16 +94,11 @@ export default function Dashboard() {
       </div>
 
       <div style={{ border: "1px solid blue" }}>
-        {existingItems.map((item) => (
-          <div key={item.id} style={{ border: "1px solid red" }}>
-            <b>linkId</b>:<span>{item.linkId}</span>
-            <b>createdAt</b>:<span>{item.createdAt}</span>
-            <b>description</b>:<span>{item.description}</span>
-            <b>url</b>:<span>{item.url}</span>
-            <br />
-            <button onClick={() => deleteItem(item.linkId)}>Delete</button>
-          </div>
-        ))}
+        <>
+          {existingItems.map((item, index) => {
+            return <Link key={index} {...item} fetchData={fetchData} />;
+          })}
+        </>
       </div>
     </div>
   );

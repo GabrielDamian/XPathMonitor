@@ -61,7 +61,27 @@ namespace WebApplication1.Controllers
                 return StatusCode(500, "A apărut o eroare în timpul ștergerii prețului: " + ex.Message);
             }
         }
+
+
+        [HttpGet("{linkId}")]
+        public IActionResult GetPrices(int linkId)
+        {
+            try
+            {
+                var prices = _priceService.GetPrices(linkId);
+                if (prices.Count > 0)
+                    return Ok(prices);
+                else
+                    return NotFound("Nu s-au găsit prețuri pentru link-ul specificat.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "A apărut o eroare în timpul obținerii prețurilor: " + ex.Message);
+            }
+        }
+
     }
+
 
     public class PriceRequest
     {

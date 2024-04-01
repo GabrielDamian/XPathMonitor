@@ -10,7 +10,7 @@ export default function Login() {
 
   const handleSubmit = async () => {
     try {
-      let response = await fetch(`${config.server}/auth/login`, {
+      let response = await fetch(`${config.server}auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

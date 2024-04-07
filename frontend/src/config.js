@@ -1,3 +1,3 @@
 export const config = {
-  server: process.env.REACT_APP_API_URL,
+  server: "http://54.173.201.78:5000",
 };

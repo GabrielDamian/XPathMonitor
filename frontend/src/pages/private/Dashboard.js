@@ -15,7 +15,7 @@ export default function Dashboard() {
   const fetchData = async () => {
     try {
       const token = Cookies.get("jwt");
-      const response = await axios.get(`${config.server}links`, {
+      const response = await axios.get(`${config.server}/links`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -36,7 +36,7 @@ export default function Dashboard() {
       const token = Cookies.get("jwt");
 
       await axios.post(
-        `${config.server}links`,
+        `${config.server}/links`,
         {
           url: newItem.link,
           description: newItem.description,
@@ -51,7 +51,7 @@ export default function Dashboard() {
       setNewItem({ link: "", description: "" });
       fetchData();
     } catch (error) {
-      console.log("error", error.message);
+      console.log(error);
     }
   };
 

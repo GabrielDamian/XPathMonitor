@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
       console.log("token from ck:", token);
       if (token) {
         try {
-          const response = await axios.get(`${config.server}auth/verify-token`, {
+          const response = await axios.get(`${config.server}/auth/verify-token`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

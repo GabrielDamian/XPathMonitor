@@ -20,6 +20,7 @@ CREATE TABLE prices (
     date_added DATETIME2 DEFAULT GETDATE()
 );
 
+USE CCProject;
 
 
 

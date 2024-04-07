@@ -20,6 +20,12 @@ namespace WebApplication1.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet("aaa")]
+        public IActionResult HealthCheck()
+        {
+            return Ok("OK");
+        }
+
         [HttpPost("login")]
         public IActionResult Login(LoginRequest request)
         {

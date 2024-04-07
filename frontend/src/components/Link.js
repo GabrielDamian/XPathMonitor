@@ -16,7 +16,7 @@ export default function Link({ linkId, createdAt, description, url, fetchData })
       const token = Cookies.get("jwt");
       console.log("token:", token);
 
-      const response = await axios.get(`${config.server}prices/${linkId}`, {
+      const response = await axios.get(`${config.server}/prices/${linkId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,7 +35,7 @@ export default function Link({ linkId, createdAt, description, url, fetchData })
     console.log("deleteItem:", id);
     try {
       const token = Cookies.get("jwt");
-      await axios.delete(`${config.server}links/${id}`, {
+      await axios.delete(`${config.server}/links/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

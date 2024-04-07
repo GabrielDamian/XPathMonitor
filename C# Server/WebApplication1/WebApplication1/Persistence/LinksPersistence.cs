@@ -8,6 +8,8 @@ namespace WebApplication1.Persistence
         bool UpdateLink(int linkId, int userId, string url, string description);
         bool DeleteLink(int linkId, int userId);
         List<Link> GetLinks(int userId);
+
+        List<Link> GetAllLinks();
     }
 
     public class Link
@@ -94,7 +96,6 @@ namespace WebApplication1.Persistence
             }
         }
 
-
         public bool DeleteLink(int linkId, int userId)
         {
             using (var command = _dbConnection.CreateCommand())
@@ -154,6 +155,35 @@ namespace WebApplication1.Persistence
         }
 
 
+        public List<Link> GetAllLinks()
+        {
+            List<Link> links = new List<Link>();
+            
+            using (var command = _dbConnection.CreateCommand())
+            {
+                _dbConnection.Open();
+                command.CommandText = "SELECT link_id, url, description, created_at FROM links";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var link = new Link
+                        {
+                            LinkId = reader.GetInt32(reader.GetOrdinal("link_id")),
+                            Url = reader.GetString(reader.GetOrdinal("url")),
+                            Description = reader.GetString(reader.GetOrdinal("description")),
+                            CreatedAt = reader.GetDateTime(reader.GetOrdinal("created_at"))
+                        };
+                        links.Add(link);
+                    }
+                }
+                _dbConnection.Close();
+            }
+            
+
+            return links;
+        }
 
     }
 }

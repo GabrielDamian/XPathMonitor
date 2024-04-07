@@ -25,6 +25,6 @@ INSERT INTO prices (link_id, price, currency) VALUES
 
 
 
-SELECT * FROM USERS;
-SELECT * FROM links;
+SELECT * FROM users;
+SELECT * FROM LINKS;
 SELECT * FROM prices;

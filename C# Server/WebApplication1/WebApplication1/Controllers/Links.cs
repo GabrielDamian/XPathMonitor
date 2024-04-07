@@ -94,6 +94,33 @@ namespace WebApplication1.Controllers
                 return StatusCode(500, "A apărut o eroare în timpul ștergerii legăturii: " + ex.Message);
             }
         }
+
+        [HttpGet("special")]
+        public IActionResult GetAllLinksSpecial()
+        {
+            try
+            {
+                var links = _linkService.GetAllLinks();
+                return Ok(links);
+                // Verifică dacă în header există cheia "bypass" cu valoarea "12345"
+                /*
+                if (Request.Headers.TryGetValue("bypass", out var value) && value == "12345")
+                {
+                    // Dacă este adevărat, returnează toate link-urile fără a verifica utilizatorul autentificat
+                    
+                }
+                else
+                {
+                    return Unauthorized("Accesul interzis.");
+                }
+                */
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "A apărut o eroare în timpul obținerii legăturilor: " + ex.Message);
+            }
+        }
+
     }
 
     public class LinkRequest

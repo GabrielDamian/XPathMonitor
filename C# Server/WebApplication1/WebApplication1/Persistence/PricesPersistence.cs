@@ -1,12 +1,11 @@
-﻿using System.Data;
+﻿using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace WebApplication1.Persistence
 {
     public interface IPriceService
     {
         int AddPrice(int linkId, decimal price, string currency);
-        bool UpdatePrice(int priceId, int linkId, decimal price, string currency);
-        bool DeletePrice(int priceId, int linkId);
         List<Price> GetPrices(int linkId);
     }
 
@@ -65,9 +64,16 @@ namespace WebApplication1.Persistence
         {
             List<Price> prices = new List<Price>();
 
-            using (var command = _dbConnection.CreateCommand())
+            var awsSqlConnectionString = Helpers.GetRDSConnectionString();
+            Console.WriteLine(_dbConnection.ConnectionString);
+            var connection = new SqlConnection(awsSqlConnectionString);
+            connection.ConnectionString += ";Encrypt=true;TrustServerCertificate=true";
+
+            if (connection.State != ConnectionState.Open)
+                    connection.Open();
+
+            using (var command = connection.CreateCommand())
             {
-                _dbConnection.Open();
                 command.CommandText = "SELECT price_id, link_id, price, currency, date_added FROM prices WHERE link_id = @LinkId";
 
                 var linkIdParam = command.CreateParameter();
@@ -90,66 +96,11 @@ namespace WebApplication1.Persistence
                         prices.Add(price);
                     }
                 }
-
-                _dbConnection.Close();
             }
 
             return prices;
         }
-        public bool UpdatePrice(int priceId, int linkId, decimal price, string currency)
-        {
-            using (var command = _dbConnection.CreateCommand())
-            {
-                _dbConnection.Open();
-                command.CommandText = "UPDATE prices SET price = @Price, currency = @Currency WHERE price_id = @PriceId AND link_id = @LinkId";
 
-                var priceIdParam = command.CreateParameter();
-                priceIdParam.ParameterName = "@PriceId";
-                priceIdParam.Value = priceId;
-                command.Parameters.Add(priceIdParam);
-
-                var linkIdParam = command.CreateParameter();
-                linkIdParam.ParameterName = "@LinkId";
-                linkIdParam.Value = linkId;
-                command.Parameters.Add(linkIdParam);
-
-                var priceParam = command.CreateParameter();
-                priceParam.ParameterName = "@Price";
-                priceParam.Value = price;
-                command.Parameters.Add(priceParam);
-
-                var currencyParam = command.CreateParameter();
-                currencyParam.ParameterName = "@Currency";
-                currencyParam.Value = currency;
-                command.Parameters.Add(currencyParam);
-
-                int rowsAffected = command.ExecuteNonQuery();
-                _dbConnection.Close();
-                return rowsAffected > 0;
-            }
-        }
-        public bool DeletePrice(int priceId, int linkId)
-        {
-            using (var command = _dbConnection.CreateCommand())
-            {
-                _dbConnection.Open();
-                command.CommandText = "DELETE FROM prices WHERE price_id = @PriceId AND link_id = @LinkId";
-
-                var priceIdParam = command.CreateParameter();
-                priceIdParam.ParameterName = "@PriceId";
-                priceIdParam.Value = priceId;
-                command.Parameters.Add(priceIdParam);
-
-                var linkIdParam = command.CreateParameter();
-                linkIdParam.ParameterName = "@LinkId";
-                linkIdParam.Value = linkId;
-                command.Parameters.Add(linkIdParam);
-
-                int rowsAffected = command.ExecuteNonQuery();
-                _dbConnection.Close();
-                return rowsAffected > 0;
-            }
-        }
 
     }
 }

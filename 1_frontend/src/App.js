@@ -6,6 +6,7 @@ import Signup from "./pages/public/Signup";
 import Dashboard from "./pages/private/Dashboard";
 
 import ProtectedRoute from "./pages/ProtectedRoute";
+import "./App.css";
 
 export default function App() {
   return (

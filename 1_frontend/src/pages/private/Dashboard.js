@@ -3,6 +3,8 @@ import Cookies from "js-cookie";
 import { config } from "../../config";
 import axios from "axios";
 import Link from "../../components/Link";
+import "./Dashboard.css";
+import TextField from "@mui/material/TextField";
 
 export default function Dashboard() {
   const [newItem, setNewItem] = useState({ link: "", description: "" });
@@ -65,40 +67,45 @@ export default function Dashboard() {
   };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome to the dashboard</p>
-
-      <a href="/login">Login</a>
-      <br></br>
-      <a href="/signup">Signup</a>
-      <br></br>
-      <button onClick={logout}>Logout</button>
-      <br></br>
-      <div style={{ border: "1px solid black" }}>
-        <input
-          type="text"
-          placeholder="link"
-          name="link"
-          onChange={handleChange}
-          value={newItem["link"]}
-        />
-        <input
-          type="text"
-          placeholder="description"
-          name="description"
-          onChange={handleChange}
-          value={newItem["description"]}
-        />
-        <button onClick={handleAddNewItem}>Add new item</button>
+    <div className="dash-container">
+      <div className="dash-container-top">
+        <div className="dash-container-top-left">
+          <p>Dashboard</p>
+        </div>
+        <div className="dash-container-top-right">
+          <button onClick={logout}>Logout</button>
+        </div>
       </div>
-
-      <div style={{ border: "1px solid blue" }}>
-        <>
+      <div className="dash-container-bot">
+        <div className="dash-container-bot-insert">
+          <div className="dash-container-bot-insert-col">
+            <TextField
+              label="Link"
+              type="text"
+              name="link"
+              onChange={handleChange}
+              value={newItem["link"]}
+            />
+          </div>
+          <div className="dash-container-bot-insert-col">
+            <TextField
+              type="text"
+              label="description"
+              name="description"
+              onChange={handleChange}
+              value={newItem["description"]}
+            />
+          </div>
+          <div className="dash-container-bot-insert-col">
+            <button onClick={handleAddNewItem}>ADD</button>
+          </div>
+        </div>
+        <div className="dash-container-bot-view">
+          <h3>History</h3>
           {existingItems.map((item, index) => {
             return <Link key={index} {...item} fetchData={fetchData} />;
           })}
-        </>
+        </div>
       </div>
     </div>
   );

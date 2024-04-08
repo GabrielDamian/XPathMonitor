@@ -1,0 +1,124 @@
+.landing-container
+{
+    height: 100vh;
+    background-color: var(--primary);
+    padding: 10px;
+}
+.landing-top
+{
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
+.landing-top-left
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.7rem;
+}
+.landing-top-left a 
+{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+.landing-top-right
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.landing-top-right-login
+{
+    text-decoration: none;
+    color: white;
+    margin-right: 40px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+.landing-top-right-login:hover 
+{
+    transform: scale(1.1);
+}
+.landing-top-right-register
+{
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: var(--secondary);
+    color: var(--primary);
+    transition: all 0.3s ease;
+}
+.landing-top-right-register:hover
+{
+    transform: scale(1.1);
+}
+.landing-core
+{
+    height: 90vh;
+    display: flex;
+}
+.landing-core-left
+{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0px 50px;
+}
+.landing-core-left h1
+{
+    font-size: 3rem;
+    color: white;
+    font-weight: bold;
+}
+.landing-core-left p
+{
+    color: var(--primary-color);
+    margin-top: 20px;
+    font-size: 1.3rem;
+}
+.landing-core-left a
+{
+    padding: 10px;
+    text-decoration: none;
+    background-color: var(--secondary);
+    color: var(--primary);
+    width: 170px;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+.landing-core-left a:hover
+{
+    transform: scale(1.1);
+}
+.landing-core-right
+{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}   
+.landing-core-right-core 
+{
+    height: 60%;
+    width: 60%;
+    background-color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+.landing-core-right-core img 
+{
+    height: 90%;
+    object-fit: contain;
+}

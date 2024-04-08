@@ -1,0 +1,90 @@
+.dash-container
+{
+    height: 100vh;
+    background-color: var(--primary);
+}
+.dash-container-top
+{
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 50px;
+}
+.dash-container-top-left 
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: white;
+}
+.dash-container-top-right 
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dash-container-top-right button 
+{
+    padding: 10px 20px;
+    outline: none;
+    border: none;
+    background-color: var(--secondary);
+    color: var(--primary);
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    font-weight: 500;
+}
+.dash-container-top-right button:hover 
+{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.dash-container-bot 
+{
+    height: 90vh;
+}
+.dash-container-bot-insert
+{
+    height: 10%;
+    display: flex;
+    padding: 0px 30px;
+}
+.dash-container-bot-insert-col 
+{
+    width: 15%;
+    display: flex;
+    align-items: center;
+}
+.dash-container-bot-insert-col button {
+    padding: 10px 20px;
+    outline: none;
+    border: none;
+    background-color: var(--secondary);
+    color: var(--primary);
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    font-weight: 500;
+}
+.dash-container-bot-insert-col button:hover
+{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+.dash-container-bot-view 
+{
+    height: 90%;
+    overflow-y: scroll;
+    padding: 30px;
+}
+.dash-container-bot-view h3 
+{
+    margin-bottom: 10px;
+    color: white;
+}
+.link-container
+{
+    margin-bottom: 20px;
+}

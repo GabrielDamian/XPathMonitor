@@ -39,7 +39,15 @@ export default function Signup() {
       setPassword(e.target.value);
     }
   };
-
+  const styles = {
+    style: { backgroundColor: "var(--primary)", color: "red" },
+    InputLabelProps: {
+      style: { color: "white", fontWeight: "bold" },
+    },
+    InputProps: {
+      style: { color: "gray" },
+    },
+  };
   return (
     <div className="landing-container">
       <div className="landing-top">
@@ -64,6 +72,7 @@ export default function Signup() {
             onChange={handleChange}
             value={username}
             variant="outlined"
+            {...styles}
           />
 
           <TextField
@@ -76,6 +85,7 @@ export default function Signup() {
             sx={{
               marginTop: "30px",
             }}
+            {...styles}
           />
           <Button
             sx={{

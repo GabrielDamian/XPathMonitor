@@ -43,6 +43,15 @@ export default function Login() {
     }
   };
 
+  const styles = {
+    style: { backgroundColor: "var(--primary)", color: "red" },
+    InputLabelProps: {
+      style: { color: "white", fontWeight: "bold" },
+    },
+    InputProps: {
+      style: { color: "gray" },
+    },
+  };
   return (
     <div className="landing-container">
       <div className="landing-top">
@@ -67,6 +76,7 @@ export default function Login() {
             onChange={handleChange}
             value={username}
             variant="outlined"
+            {...styles}
           />
 
           <TextField
@@ -79,6 +89,8 @@ export default function Login() {
             sx={{
               marginTop: "30px",
             }}
+            style={{ backgroundColor: "var(--primary)", color: "red" }}
+            {...styles}
           />
           <Button
             sx={{

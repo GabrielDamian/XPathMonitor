@@ -66,6 +66,16 @@ export default function Dashboard() {
     window.location.href = "/login";
   };
 
+  const styles = {
+    style: { backgroundColor: "var(--primary)", color: "red" },
+    InputLabelProps: {
+      style: { color: "white", fontWeight: "bold" },
+    },
+    InputProps: {
+      style: { color: "gray" },
+    },
+  };
+
   return (
     <div className="dash-container">
       <div className="dash-container-top">
@@ -85,6 +95,7 @@ export default function Dashboard() {
               name="link"
               onChange={handleChange}
               value={newItem["link"]}
+              {...styles}
             />
           </div>
           <div className="dash-container-bot-insert-col">
@@ -94,6 +105,7 @@ export default function Dashboard() {
               name="description"
               onChange={handleChange}
               value={newItem["description"]}
+              {...styles}
             />
           </div>
           <div className="dash-container-bot-insert-col">

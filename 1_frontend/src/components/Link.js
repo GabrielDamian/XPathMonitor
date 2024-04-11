@@ -10,9 +10,17 @@ import { LineChart } from "@mui/x-charts/LineChart";
 
 export default function Link({ linkId, createdAt, description, url, fetchData }) {
   const [linksPrices, setLinkPrices] = useState([]);
+  const [graphData, setGraphData] = useState({
+    xAxis: [],
+    values: [], //sync by index
+  });
 
   useEffect(() => {
-    console.log("linksPrices update:", linksPrices);
+    console.log("graphData:", graphData);
+  }, [graphData]);
+
+  useEffect(() => {
+    parseGraphData(linksPrices);
   }, [linksPrices]);
 
   const fetchLinkPrices = async () => {
@@ -29,6 +37,31 @@ export default function Link({ linkId, createdAt, description, url, fetchData })
     }
   };
 
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Adaugă un zero în fața lunii dacă este necesar
+    const day = String(date.getDate()).padStart(2, "0"); // Adaugă un zero în fața zilei dacă este necesar
+
+    // Concatenează componentele pentru a obține formatul dorit
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  }
+  const parseGraphData = (linksPricesSrc) => {
+    console.log("parseGraphData:", linksPricesSrc);
+    let xAxis = [];
+    let values = [];
+    linksPrices.forEach((el) => {
+      values.push(el["priceValue"]);
+      let parsedDate = new Date(el["dateAdded"]);
+      xAxis.push(parsedDate);
+    });
+
+    setGraphData({
+      xAxis: xAxis,
+      values: values,
+    });
+  };
   useEffect(() => {
     fetchLinkPrices();
   }, []);
@@ -123,14 +156,15 @@ export default function Link({ linkId, createdAt, description, url, fetchData })
             <LineChart
               xAxis={[
                 {
-                  data: [1, 2, 3, 5, 8, 10],
+                  scaleType: "utc",
+                  data: graphData.xAxis,
                   axisLine: { color: "red" }, // Culoarea liniei axei x
                   tick: { fill: "blue" }, // Culoarea marcajelor axei x
                 },
               ]}
               series={[
                 {
-                  data: [2, 5.5, 2, 8.5, 1.5, 5],
+                  data: graphData.values,
                 },
               ]}
               width={500}

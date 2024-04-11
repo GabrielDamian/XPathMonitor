@@ -98,20 +98,20 @@ export const handler = async (event) => {
   }
 };
 
-async function devMain() {
-  let simulateDB = [
-    {
-      url: "https://www.it-sh.ro/magazin/calculatoare-second-hand/calculatoare-gaming/calculator-gaming-br-19-core-i7-4770-16gb-ddr3-256gb-ssd-1tb-hdd-amd-rx-470-4gb/",
-    },
-    {
-      url: "https://www.it-sh.ro/magazin/calculatoare-second-hand/i3-i5-i7/hp-compaq-8300-elite-sff-i5-3470-3-2ghz8gb-ddr3500gb/",
-    },
-  ];
+// async function devMain() {
+//   let simulateDB = [
+//     {
+//       url: "https://www.it-sh.ro/magazin/calculatoare-second-hand/calculatoare-gaming/calculator-gaming-br-19-core-i7-4770-16gb-ddr3-256gb-ssd-1tb-hdd-amd-rx-470-4gb/",
+//     },
+//     {
+//       url: "https://www.it-sh.ro/magazin/calculatoare-second-hand/i3-i5-i7/hp-compaq-8300-elite-sff-i5-3470-3-2ghz8gb-ddr3500gb/",
+//     },
+//   ];
 
-  for (let i = 0; i <= simulateDB.length - 1; i++) {
-    let url = simulateDB[i].url;
+//   for (let i = 0; i <= simulateDB.length - 1; i++) {
+//     let url = simulateDB[i].url;
 
-    let value = await getPageHtmlAndExtractElement2(url);
-    console.log("Extracted value:", value);
-  }
-}
+//     let value = await getPageHtmlAndExtractElement2(url);
+//     console.log("Extracted value:", value);
+//   }
+// }

@@ -1,6 +1,6 @@
 # XPathMonitor
 ### AWS services
-Web App to monitor product prices for a specific online shop (history price evolution).
+Web App to monitor history price evolution (AWS services architecture)
 
 ## Components
 ### Web Front-End App

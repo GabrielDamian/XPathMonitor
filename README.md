@@ -3,18 +3,18 @@
 Web App to monitor product prices for a specific online shop (history price evolution).
 
 ## Components
-## Web Front-End App
+### Web Front-End App
 - ReactJs app 
 - docker container deployed to EC2 instance; 
 
-## Back-End API
+### Back-End API
 - C# ASP.NET Core APIs;
 - docker container deployed to EC2 instance;
 
-## Database
+### Database
 - AWS RDS (sql);
 
-## AWS lambda:
+### AWS lambda:
 - NodeJs;
 - gets triggered at every 24h by EventBridge, use C# APIs to extract existing product links from the DB, extract their current price and push into into the history of the current product;
 

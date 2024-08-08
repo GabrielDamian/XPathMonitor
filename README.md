@@ -15,7 +15,7 @@ Web App to monitor product prices for a specific online shop (history price evol
 - AWS RDS (sql);
 
 ## AWS lambda:
--NodeJs;
--gets triggered at every 24h by EventBridge, use C# APIs to extract existing product links from the DB, extract their current price and push into into the history of the current product;
+- NodeJs;
+- gets triggered at every 24h by EventBridge, use C# APIs to extract existing product links from the DB, extract their current price and push into into the history of the current product;
 
 ![image](https://github.com/GabrielDamian/XPathMonitor/assets/76115929/19101240-eeb8-408b-901a-504e16f4272e)
